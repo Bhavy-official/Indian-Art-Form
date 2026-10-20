@@ -5,13 +5,11 @@ import { ambientSound } from '../../utils/audio';
 interface NavbarProps {
   activeSection: string;
   onNavigate: (sectionId: string) => void;
-  scrollProgress: number; // 0 to 100
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
   activeSection,
-  onNavigate,
-  scrollProgress
+  onNavigate
 }) => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -57,19 +55,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           borderBottom: scrolled ? '1px solid var(--border-subtle)' : '1px solid transparent'
         }}
       >
-        {/* Scroll Progress Bar at very top of screen */}
-        <div
-          style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            height: '2px',
-            width: `${scrollProgress}%`,
-            background: 'linear-gradient(90deg, var(--color-aged-brass), var(--color-antique-parchment))',
-            transition: 'width 0.1s linear',
-            zIndex: 1001
-          }}
-        />
+
 
         {/* KAAL Wordmark & Brand Identity */}
         <div

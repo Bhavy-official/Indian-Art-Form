@@ -10,18 +10,11 @@ import { ARTIFACTS_DATA, Artifact } from './data/artifacts';
 
 export const App: React.FC = () => {
   const [activeSection, setActiveSection] = useState<string>('hero');
-  const [scrollProgress, setScrollProgress] = useState<number>(0);
   const [selectedArtifact, setSelectedArtifact] = useState<Artifact | null>(null);
 
-  // Scroll tracking & Progress calculation
+  // Active Section Detection on scroll
   useEffect(() => {
     const handleScroll = () => {
-      const totalScroll = document.documentElement.scrollTop || document.body.scrollTop;
-      const windowHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-      const scrollPct = windowHeight > 0 ? (totalScroll / windowHeight) * 100 : 0;
-      setScrollProgress(Math.min(100, Math.max(0, scrollPct)));
-
-      // Active Section Detection
       const sections = ['hero', 'timeline', 'collection', 'references'];
       const scrollPos = window.scrollY + 200;
 
@@ -113,7 +106,6 @@ export const App: React.FC = () => {
       <Navbar
         activeSection={activeSection}
         onNavigate={handleNavigate}
-        scrollProgress={scrollProgress}
       />
 
       {/* Destination 1: Entrance / Hero */}

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { X, ChevronLeft, ChevronRight, ExternalLink, Box, Image as ImageIcon, MapPin, Calendar, Award, Info, Sparkles } from 'lucide-react';
+import { X, ChevronLeft, ChevronRight, ExternalLink, MapPin, Calendar, Award, Info, Sparkles } from 'lucide-react';
 import { Artifact, ArtifactHotspot } from '../../data/artifacts';
-import { Artifact3DViewer } from './Artifact3DViewer';
 
 interface ArtifactDetailProps {
   artifact: Artifact | null;
@@ -20,12 +19,10 @@ export const ArtifactDetail: React.FC<ArtifactDetailProps> = ({
   hasNext,
   hasPrev
 }) => {
-  const [viewMode, setViewMode] = useState<'image' | '3d'>('image');
   const [activeHotspot, setActiveHotspot] = useState<ArtifactHotspot | null>(null);
 
-  // Reset view mode and hotspots on artifact change
+  // Reset active hotspot on artifact change
   useEffect(() => {
-    setViewMode(artifact?.modelType ? '3d' : 'image');
     setActiveHotspot(null);
   }, [artifact?.id]);
 
@@ -55,7 +52,7 @@ export const ArtifactDetail: React.FC<ArtifactDetailProps> = ({
         position: 'fixed',
         inset: 0,
         zIndex: 2000,
-        backgroundColor: 'rgba(14, 14, 12, 0.92)',
+        backgroundColor: 'rgba(14, 14, 12, 0.94)',
         backdropFilter: 'blur(16px)',
         display: 'flex',
         alignItems: 'center',
@@ -106,72 +103,25 @@ export const ArtifactDetail: React.FC<ArtifactDetailProps> = ({
             </span>
           </div>
 
-          {/* Action Tools & Close */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-            {/* View Mode Switcher if 3D model available */}
-            {artifact.modelType && (
-              <div style={{
-                display: 'flex',
-                background: 'rgba(20, 20, 17, 0.8)',
-                padding: '3px',
-                borderRadius: '3px',
-                border: '1px solid var(--border-subtle)'
-              }}>
-                <button
-                  onClick={() => setViewMode('image')}
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '6px',
-                    padding: '6px 12px',
-                    fontSize: '0.78rem',
-                    borderRadius: '2px',
-                    background: viewMode === 'image' ? 'var(--color-aged-brass)' : 'transparent',
-                    color: viewMode === 'image' ? 'var(--color-obsidian)' : 'var(--color-antique-parchment)',
-                    fontWeight: 600
-                  }}
-                >
-                  <ImageIcon size={14} /> Archival Image
-                </button>
-                <button
-                  onClick={() => setViewMode('3d')}
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '6px',
-                    padding: '6px 12px',
-                    fontSize: '0.78rem',
-                    borderRadius: '2px',
-                    background: viewMode === '3d' ? 'var(--color-aged-brass)' : 'transparent',
-                    color: viewMode === '3d' ? 'var(--color-obsidian)' : 'var(--color-antique-parchment)',
-                    fontWeight: 600
-                  }}
-                >
-                  <Box size={14} /> Interactive 3D
-                </button>
-              </div>
-            )}
-
-            {/* Close Button */}
-            <button
-              onClick={onClose}
-              aria-label="Close Exhibition Viewer"
-              style={{
-                width: '36px',
-                height: '36px',
-                borderRadius: '50%',
-                background: 'rgba(233, 223, 201, 0.08)',
-                color: 'var(--color-soft-ivory)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                transition: 'background 0.2s ease',
-                border: '1px solid var(--border-subtle)'
-              }}
-            >
-              <X size={18} />
-            </button>
-          </div>
+          {/* Close Button */}
+          <button
+            onClick={onClose}
+            aria-label="Close Exhibition Viewer"
+            style={{
+              width: '36px',
+              height: '36px',
+              borderRadius: '50%',
+              background: 'rgba(233, 223, 201, 0.08)',
+              color: 'var(--color-soft-ivory)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              transition: 'background 0.2s ease',
+              border: '1px solid var(--border-subtle)'
+            }}
+          >
+            <X size={18} />
+          </button>
         </div>
 
         {/* Exhibition Content Area (Split Screen on Desktop) */}
@@ -181,7 +131,7 @@ export const ArtifactDetail: React.FC<ArtifactDetailProps> = ({
           overflowY: 'auto',
           flex: 1
         }}>
-          {/* Left Column: Visual Centerpiece (Image or 3D + Hotspots) */}
+          {/* Left Column: Visual Archival Centerpiece + Hotspots */}
           <div style={{
             position: 'relative',
             background: '#11110f',
@@ -193,63 +143,52 @@ export const ArtifactDetail: React.FC<ArtifactDetailProps> = ({
             minHeight: '440px',
             padding: '24px'
           }}>
-            {/* Visual Centerpiece Renderer */}
-            {viewMode === '3d' && artifact.modelType ? (
-              <Artifact3DViewer
-                modelType={artifact.modelType}
-                title={artifact.title}
-                hotspots={artifact.hotspots}
-                onHotspotClick={(h) => setActiveHotspot(h)}
-                activeHotspotId={activeHotspot?.id}
+            <div style={{ position: 'relative', width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <img
+                src={artifact.image}
+                alt={artifact.imageAlt}
+                style={{
+                  maxHeight: '520px',
+                  width: 'auto',
+                  maxWidth: '100%',
+                  objectFit: artifact.imageFit || 'contain',
+                  objectPosition: artifact.imagePosition || 'center center',
+                  boxShadow: '0 20px 50px rgba(0,0,0,0.85)',
+                  borderRadius: '2px',
+                  border: '1px solid rgba(233, 223, 201, 0.15)'
+                }}
               />
-            ) : (
-              <div style={{ position: 'relative', width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <img
-                  src={artifact.image}
-                  alt={artifact.imageAlt}
-                  style={{
-                    maxHeight: '520px',
-                    width: 'auto',
-                    maxWidth: '100%',
-                    objectFit: artifact.imageFit || 'contain',
-                    objectPosition: artifact.imagePosition || 'center center',
-                    boxShadow: '0 20px 50px rgba(0,0,0,0.85)',
-                    borderRadius: '2px',
-                    border: '1px solid rgba(233, 223, 201, 0.15)'
-                  }}
-                />
 
-                {/* Interactive Visual Hotspots */}
-                {artifact.hotspots?.map((hotspot) => (
-                  <button
-                    key={hotspot.id}
-                    onClick={() => setActiveHotspot(activeHotspot?.id === hotspot.id ? null : hotspot)}
-                    aria-label={`Hotspot: ${hotspot.title}`}
-                    style={{
-                      position: 'absolute',
-                      left: `${hotspot.x}%`,
-                      top: `${hotspot.y}%`,
-                      transform: 'translate(-50%, -50%)',
-                      width: '26px',
-                      height: '26px',
-                      borderRadius: '50%',
-                      background: activeHotspot?.id === hotspot.id ? 'var(--color-aged-brass)' : 'rgba(20, 20, 17, 0.85)',
-                      border: '2px solid var(--color-aged-brass)',
-                      color: activeHotspot?.id === hotspot.id ? 'var(--color-obsidian)' : 'var(--color-aged-brass)',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      boxShadow: '0 0 16px var(--color-brass-glow)',
-                      cursor: 'pointer',
-                      zIndex: 10,
-                      transition: 'transform 0.2s ease, background 0.2s ease'
-                    }}
-                  >
-                    <Sparkles size={13} />
-                  </button>
-                ))}
-              </div>
-            )}
+              {/* Interactive Visual Hotspots */}
+              {artifact.hotspots?.map((hotspot) => (
+                <button
+                  key={hotspot.id}
+                  onClick={() => setActiveHotspot(activeHotspot?.id === hotspot.id ? null : hotspot)}
+                  aria-label={`Hotspot: ${hotspot.title}`}
+                  style={{
+                    position: 'absolute',
+                    left: `${hotspot.x}%`,
+                    top: `${hotspot.y}%`,
+                    transform: 'translate(-50%, -50%)',
+                    width: '26px',
+                    height: '26px',
+                    borderRadius: '50%',
+                    background: activeHotspot?.id === hotspot.id ? 'var(--color-aged-brass)' : 'rgba(20, 20, 17, 0.85)',
+                    border: '2px solid var(--color-aged-brass)',
+                    color: activeHotspot?.id === hotspot.id ? 'var(--color-obsidian)' : 'var(--color-aged-brass)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    boxShadow: '0 0 16px var(--color-brass-glow)',
+                    cursor: 'pointer',
+                    zIndex: 10,
+                    transition: 'transform 0.2s ease, background 0.2s ease'
+                  }}
+                >
+                  <Sparkles size={13} />
+                </button>
+              ))}
+            </div>
 
             {/* Hotspot Annotation Callout Card */}
             {activeHotspot && (

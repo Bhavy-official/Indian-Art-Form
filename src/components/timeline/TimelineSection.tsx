@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { ArrowRight, Calendar, Layers, MapPin, Eye, Sparkles } from 'lucide-react';
-import { Artifact, HISTORICAL_ERAS } from '../../data/artifacts';
+import React from 'react';
+import { ArrowRight, Calendar, Layers, MapPin, Eye } from 'lucide-react';
+import { Artifact } from '../../data/artifacts';
 
 interface TimelineSectionProps {
   artifacts: Artifact[];
@@ -11,16 +11,6 @@ export const TimelineSection: React.FC<TimelineSectionProps> = ({
   artifacts,
   onSelectArtifact
 }) => {
-  const [selectedEraFilter, setSelectedEraFilter] = useState<string>('all');
-  const [selectedArtFormFilter, setSelectedArtFormFilter] = useState<string>('all');
-
-  // Filter artifacts
-  const filteredArtifacts = artifacts.filter((a) => {
-    const eraMatch = selectedEraFilter === 'all' || a.traditionId === selectedEraFilter;
-    const artFormMatch = selectedArtFormFilter === 'all' || a.artForm === selectedArtFormFilter;
-    return eraMatch && artFormMatch;
-  });
-
   return (
     <section
       id="timeline"
@@ -32,8 +22,8 @@ export const TimelineSection: React.FC<TimelineSectionProps> = ({
         minHeight: '100vh'
       }}
     >
-      {/* Section Header & Architectural Statement */}
-      <div style={{ textAlign: 'center', marginBottom: '64px' }}>
+      {/* Section Header */}
+      <div style={{ textAlign: 'center', marginBottom: '80px' }}>
         <span className="museum-badge" style={{ marginBottom: '14px' }}>
           Chronological Exhibition
         </span>
@@ -45,94 +35,7 @@ export const TimelineSection: React.FC<TimelineSectionProps> = ({
         </p>
       </div>
 
-      {/* Epoch Jump Bar & Filtering Controls */}
-      <div style={{
-        position: 'sticky',
-        top: 'calc(var(--nav-height) + 12px)',
-        zIndex: 50,
-        marginBottom: '64px',
-        background: 'rgba(27, 26, 22, 0.92)',
-        backdropFilter: 'blur(16px)',
-        border: '1px solid var(--border-brass)',
-        borderRadius: '3px',
-        padding: '12px 20px',
-        boxShadow: 'var(--shadow-deep)',
-        display: 'flex',
-        flexWrap: 'wrap',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        gap: '16px'
-      }}>
-        {/* Quick Era Navigation Buttons */}
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', alignItems: 'center' }}>
-          <span style={{ fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.12em', color: 'rgba(233, 223, 201, 0.5)', marginRight: '4px' }}>
-            Epoch:
-          </span>
-          <button
-            onClick={() => setSelectedEraFilter('all')}
-            style={{
-              padding: '5px 12px',
-              fontSize: '0.78rem',
-              borderRadius: '2px',
-              border: selectedEraFilter === 'all' ? '1px solid var(--color-aged-brass)' : '1px solid transparent',
-              background: selectedEraFilter === 'all' ? 'var(--color-aged-brass)' : 'rgba(233, 223, 201, 0.05)',
-              color: selectedEraFilter === 'all' ? 'var(--color-obsidian)' : 'var(--color-antique-parchment)',
-              fontWeight: selectedEraFilter === 'all' ? 600 : 400
-            }}
-          >
-            All Eras ({artifacts.length})
-          </button>
-
-          {HISTORICAL_ERAS.map((era) => (
-            <button
-              key={era.id}
-              onClick={() => setSelectedEraFilter(era.id)}
-              style={{
-                padding: '5px 12px',
-                fontSize: '0.78rem',
-                borderRadius: '2px',
-                border: selectedEraFilter === era.id ? `1px solid ${era.themeColor}` : '1px solid var(--border-subtle)',
-                background: selectedEraFilter === era.id ? era.themeColor : 'transparent',
-                color: selectedEraFilter === era.id ? 'var(--color-obsidian)' : 'var(--color-antique-parchment)',
-                fontWeight: selectedEraFilter === era.id ? 600 : 400,
-                transition: 'all 0.2s ease'
-              }}
-            >
-              {era.title}
-            </button>
-          ))}
-        </div>
-
-        {/* Art Form Filter */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <span style={{ fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.12em', color: 'rgba(233, 223, 201, 0.5)' }}>
-            Medium:
-          </span>
-          <select
-            value={selectedArtFormFilter}
-            onChange={(e) => setSelectedArtFormFilter(e.target.value)}
-            style={{
-              background: 'var(--surface-base)',
-              color: 'var(--color-soft-ivory)',
-              border: '1px solid var(--border-subtle)',
-              padding: '6px 12px',
-              fontSize: '0.82rem',
-              borderRadius: '2px',
-              cursor: 'pointer',
-              outline: 'none'
-            }}
-          >
-            <option value="all">All Mediums</option>
-            <option value="Sculpture">Sculpture</option>
-            <option value="Painting">Painting</option>
-            <option value="Architecture">Architecture</option>
-            <option value="Miniature Painting">Miniature Painting</option>
-            <option value="Folk & Living Art">Folk & Living Art</option>
-          </select>
-        </div>
-      </div>
-
-      {/* Vertical Spine & Timeline Entries Container */}
+      {/* Vertical Spine & Pure Chronological Timeline Entries */}
       <div style={{ position: 'relative' }}>
         {/* Continuous Architectural Vertical Line Spine */}
         <div
@@ -151,7 +54,7 @@ export const TimelineSection: React.FC<TimelineSectionProps> = ({
 
         {/* Chronological Artifacts Sequence */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '96px', position: 'relative', zIndex: 2 }}>
-          {filteredArtifacts.map((artifact, index) => {
+          {artifacts.map((artifact, index) => {
             const isEven = index % 2 === 0;
 
             return (
@@ -166,7 +69,7 @@ export const TimelineSection: React.FC<TimelineSectionProps> = ({
                 }}
                 className="timeline-entry-row"
               >
-                {/* Timeline Center Node / Dot with Date Badge */}
+                {/* Timeline Center Node / Dot */}
                 <div
                   style={{
                     position: 'absolute',
@@ -203,7 +106,7 @@ export const TimelineSection: React.FC<TimelineSectionProps> = ({
                   </button>
                 </div>
 
-                {/* Left Column (Image or Text based on alternating row) */}
+                {/* Left Column */}
                 <div
                   style={{
                     order: isEven ? 1 : 2,
