@@ -168,7 +168,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             alignItems: 'center'
           }}
         >
-          {/* Primary Action: Enter the Timeline */}
+          {/* Primary Action: Enter the Chronicle */}
           <button
             onClick={onEnterTimeline}
             style={{
@@ -196,7 +196,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
               e.currentTarget.style.boxShadow = '0 8px 24px rgba(185, 154, 96, 0.35)';
             }}
           >
-            <span>Enter the Timeline</span>
+            <span>Enter the Chronicle</span>
             <ArrowDown size={16} />
           </button>
 
@@ -264,7 +264,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
               6
             </span>
             <span style={{ fontSize: '0.72rem', textTransform: 'uppercase', letterSpacing: '0.15em', color: 'rgba(233, 223, 201, 0.6)' }}>
-              Historical Epochs
+              Major Traditions
             </span>
           </div>
 
@@ -272,10 +272,10 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
 
           <div style={{ textAlign: 'center' }}>
             <span style={{ display: 'block', fontSize: '1.6rem', fontFamily: 'var(--font-editorial)', color: 'var(--color-aged-brass)', fontWeight: 600 }}>
-              16
+              12
             </span>
             <span style={{ fontSize: '0.72rem', textTransform: 'uppercase', letterSpacing: '0.15em', color: 'rgba(233, 223, 201, 0.6)' }}>
-              Curated Masterpieces
+              Masterpieces
             </span>
           </div>
         </div>

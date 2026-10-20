@@ -78,7 +78,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
               </li>
               <li>
                 <button onClick={() => onNavigate('timeline')} style={{ color: 'rgba(245, 240, 230, 0.8)', transition: 'color 0.2s' }}>
-                  Vertical Chronological Timeline
+                  The Living Chronicle
                 </button>
               </li>
               <li>
@@ -94,10 +94,10 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
             </ul>
           </div>
 
-          {/* Curatorial Epochs */}
+          {/* Historical Chapters */}
           <div>
             <h4 style={{ fontSize: '0.82rem', textTransform: 'uppercase', letterSpacing: '0.15em', color: 'var(--color-aged-brass)', marginBottom: '16px' }}>
-              Permanent Epochs
+              Historical Chapters
             </h4>
             <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '0.84rem', color: 'rgba(233, 223, 201, 0.7)' }}>
               <li>Indus Valley Civilization (c. 2300 BCE)</li>

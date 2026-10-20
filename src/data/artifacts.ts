@@ -41,6 +41,7 @@ export interface HistoricalEra {
   title: string;
   subtitle: string;
   dateRange: string;
+  location: string;
   description: string;
   themeColor: string;
 }
@@ -48,50 +49,56 @@ export interface HistoricalEra {
 export const HISTORICAL_ERAS: HistoricalEra[] = [
   {
     id: 'indus-valley',
-    title: 'Indus Valley',
-    subtitle: 'Bronze, Steatite & Urban Form',
-    dateRange: 'c. 3300 – 1300 BCE',
-    description: 'The earliest known urban civilization of the Indian subcontinent, producing some of the world\'s first works of art.',
+    title: 'Harappan Civilization (Indus Valley)',
+    subtitle: 'Prehistoric Metallurgy & Urban Form',
+    dateRange: 'c. 3300 – 1300 BCE (Mature: c. 2600–1900 BCE)',
+    location: 'Indus River Basin (Mohenjo-daro, Harappa, Dholavira, Rakhigarhi)',
+    description: 'One of the earliest urban civilizations of antiquity, celebrated for advanced brick engineering, lost-wax bronze metallurgy, and miniature steatite seal iconography.',
     themeColor: '#A6533B'
   },
   {
     id: 'ajanta',
-    title: 'Ajanta Caves',
-    subtitle: 'Rock-Cut Sanctuaries & Classical Frescoes',
-    dateRange: 'c. 2nd Century BCE – 480 CE',
-    description: 'Rock-cut Buddhist cave monuments in Maharashtra, home to extraordinary murals and sculptures.',
+    title: 'Ajanta Cave Sanctuaries (Classical Golden Age)',
+    subtitle: 'Rock-Cut Sanctuaries & Compassionate Frescoes',
+    dateRange: 'c. 2nd Century BCE – 480 CE (Vakataka Dynasty)',
+    location: 'Waghora River Gorge, Aurangabad District, Maharashtra',
+    description: 'Thirty rock-cut Buddhist monasteries and prayer halls hewn into volcanic basalt cliffs, housing India\'s most celebrated classical fresco-secco murals.',
     themeColor: '#637C6B'
   },
   {
     id: 'chola',
-    title: 'Chola Dynasty',
-    subtitle: 'Lost-Wax Bronze Sculpture & Temple Arts',
+    title: 'Imperial Chola Dynasty',
+    subtitle: 'Lost-Wax Bronze Sculpture & Temple Architecture',
     dateRange: 'c. 9th – 13th Century CE',
-    description: 'A celebrated South Indian dynasty renowned for its prolific temple building and exquisite lost-wax bronze casting.',
+    location: 'Thanjavur, Gangaikonda Cholapuram & Chidambaram, Tamil Nadu',
+    description: 'The zenith of South Indian sacred bronze casting. Chola master sthapathis perfected solid lost-wax casting, crafting dynamic cosmic icons for grand temple processions.',
     themeColor: '#B99A60'
   },
   {
     id: 'mughal',
-    title: 'Mughal Empire',
-    subtitle: 'Imperial Atelier & Miniature Painting',
-    dateRange: '16th – 19th Century CE',
-    description: 'An exquisite fusion of Persian, Central Asian, and Indian artistic traditions in royal albums and natural history studies.',
+    title: 'Mughal Imperial Ateliers',
+    subtitle: 'Courtly Illumination & Naturalist Studies',
+    dateRange: '16th – 19th Century CE (Akbar, Jahangir, Shah Jahan)',
+    location: 'Agra, Delhi, Lahore & Fatehpur Sikri',
+    description: 'An exquisite synthesis of Persian refinement, indigenous Indian expressive vibrancy, and European observation in royal albums and natural history portraits.',
     themeColor: '#41476C'
   },
   {
     id: 'madhubani',
-    title: 'Madhubani Art',
-    subtitle: 'Mithila Ritual Wall Painting & Sacred Symbols',
-    dateRange: 'Continuous Living Tradition',
-    description: 'A vibrant living art form from the Mithila region of Bihar, practiced by women for centuries on mud walls and paper.',
+    title: 'Mithila (Madhubani) Ritual Tradition',
+    subtitle: 'Matriarchal Wall Painting & Cosmic Geometry',
+    dateRange: 'Ancient to Continuous Living Tradition',
+    location: 'Mithila Region, Northern Bihar & Southern Terai of Nepal',
+    description: 'A sacred domestic art form practiced by women across generations. Using twigs, bamboo nibs, and natural dyes to paint ceremonial nuptial chambers and blessed scrolls.',
     themeColor: '#A6533B'
   },
   {
     id: 'warli',
-    title: 'Warli Art',
-    subtitle: 'Tribal Geometric Murals & Harmony with Nature',
-    dateRange: 'Continuous Living Tradition',
-    description: 'An indigenous tribal art form from Maharashtra using rudimentary geometric shapes to depict community and ritual.',
+    title: 'Warli Indigenous Tribal Art',
+    subtitle: 'Elemental Geometry & Ecological Harmony',
+    dateRange: 'Prehistoric Roots to Continuous Living Tradition',
+    location: 'Northern Sahyadri Range, Thane & Palghar Districts, Maharashtra',
+    description: 'An unbroken tribal tradition celebrating the rhythm of the cosmos. Painted with white rice paste on ochre mud walls, employing rudimentary circles, triangles, and spirals.',
     themeColor: '#858174'
   }
 ];
