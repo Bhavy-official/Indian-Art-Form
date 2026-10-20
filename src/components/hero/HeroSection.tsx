@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { ArrowDown, Sparkles, Compass } from 'lucide-react';
 
 interface HeroSectionProps {
@@ -6,13 +6,54 @@ interface HeroSectionProps {
   onExploreCollection: () => void;
 }
 
+/* Dust particle type */
+interface DustParticle {
+  l: number;   // left %
+  d: number;   // duration s
+  s: number;   // size px
+  delay: number;
+}
+
 export const HeroSection: React.FC<HeroSectionProps> = ({
   onEnterTimeline,
   onExploreCollection
 }) => {
+  const sectionRef = useRef<HTMLElement>(null);
+
+  /* Cursor-tracked pointer position (0–1) */
+  const [p, setP] = useState({ x: 0.5, y: 0.5 });
+
+  /* Dust particles — generated once on mount */
+  const [dust, setDust] = useState<DustParticle[]>([]);
+
+  useEffect(() => {
+    setDust(
+      Array.from({ length: 40 }, () => ({
+        l: Math.random() * 100,
+        d: 18 + Math.random() * 30,
+        s: 1 + Math.random() * 2.5,
+        delay: -Math.random() * 40
+      }))
+    );
+  }, []);
+
+  const onMove = (e: React.MouseEvent<HTMLElement>) => {
+    const r = sectionRef.current!.getBoundingClientRect();
+    setP({
+      x: (e.clientX - r.left) / r.width,
+      y: (e.clientY - r.top) / r.height
+    });
+  };
+
+  /* 3-D tilt values from cursor */
+  const rx = (p.y - 0.5) * -18;
+  const ry = (p.x - 0.5) * 24;
+
   return (
     <section
+      ref={sectionRef}
       id="hero"
+      onMouseMove={onMove}
       style={{
         position: 'relative',
         minHeight: '100vh',
@@ -22,71 +63,138 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
         alignItems: 'center',
         padding: '120px 24px 80px',
         overflow: 'hidden',
-        background: 'radial-gradient(ellipse at 50% 38%, #22201a 0%, #171612 55%, #141411 100%)'
+        background: 'radial-gradient(ellipse at 50% 38%, #22201a 0%, #171612 55%, #141411 100%)',
       }}
     >
-      {/* Background Architectural Light Pool behind central sculpture */}
-      <div
-        className="museum-light-pool brass"
-        style={{
-          width: '650px',
-          height: '650px',
-          top: '35%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          opacity: 0.35
-        }}
-      />
-
-      {/* Layered Floating Architectural Geometry Silhouette */}
+      {/* ── CURSOR-REACTIVE BRASS SPOTLIGHT ────────────────────────── */}
       <div
         style={{
           position: 'absolute',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          width: 'min(90vw, 840px)',
-          height: 'min(80vh, 700px)',
+          inset: 0,
           pointerEvents: 'none',
-          opacity: 0.12,
-          border: '1px solid var(--color-aged-brass)',
-          borderRadius: '50%',
-          boxShadow: '0 0 100px var(--color-brass-glow)'
+          background: `radial-gradient(500px circle at ${p.x * 100}% ${p.y * 100}%,
+            rgba(185, 154, 96, 0.13),
+            transparent 70%)`,
+          zIndex: 1,
         }}
       />
 
-      {/* Central Hero Artwork Silhouette (Chola Nataraja / Dancing Girl Bronze) */}
-      <div
+      {/* ── JALI LATTICE PATTERN (revealed under cursor spotlight) ──── */}
+      <svg
         style={{
           position: 'absolute',
-          top: '46%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          width: 'min(85vw, 560px)',
-          height: 'min(65vh, 520px)',
+          inset: 0,
+          width: '100%',
+          height: '100%',
           pointerEvents: 'none',
           opacity: 0.28,
-          maskImage: 'radial-gradient(circle at center, black 45%, transparent 75%)',
-          WebkitMaskImage: 'radial-gradient(circle at center, black 45%, transparent 75%)',
+          maskImage: `radial-gradient(340px circle at ${p.x * 100}% ${p.y * 100}%, black, transparent)`,
+          WebkitMaskImage: `radial-gradient(340px circle at ${p.x * 100}% ${p.y * 100}%, black, transparent)`,
+          zIndex: 1,
+        }}
+        aria-hidden="true"
+      >
+        <defs>
+          <pattern id="jali" width="48" height="48" patternUnits="userSpaceOnUse">
+            <path
+              d="M24 0 L48 24 L24 48 L0 24Z M24 10 L38 24 L24 38 L10 24Z"
+              fill="none"
+              stroke="var(--color-aged-brass)"
+              strokeWidth="0.7"
+            />
+            <circle cx="24" cy="24" r="3" fill="none" stroke="var(--color-aged-brass)" strokeWidth="0.6" />
+          </pattern>
+        </defs>
+        <rect width="100%" height="100%" fill="url(#jali)" />
+      </svg>
+
+      {/* ── FLOATING GOLD DUST PARTICLES ────────────────────────────── */}
+      {dust.map((d, i) => (
+        <span
+          key={i}
+          aria-hidden="true"
+          style={{
+            pointerEvents: 'none',
+            position: 'absolute',
+            bottom: '-10px',
+            left: `${d.l}%`,
+            width: `${d.s}px`,
+            height: `${d.s}px`,
+            borderRadius: '50%',
+            background: 'rgba(185, 154, 96, 0.55)',
+            animation: `kaal-drift ${d.d}s linear ${d.delay}s infinite`,
+            zIndex: 1,
+          }}
+        />
+      ))}
+
+      {/* ── YANTRA / COSMIC MANDALA — 3-D CURSOR TILT ───────────────── */}
+      <div
+        style={{
+          pointerEvents: 'none',
+          position: 'absolute',
+          inset: 0,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          zIndex: 1
+          perspective: '1200px',
+          zIndex: 1,
         }}
+        aria-hidden="true"
       >
-        <img
-          src="assets/chola/nataraja.jpg"
-          alt="Shiva Nataraja cosmic dancer silhouette"
+        <div
           style={{
-            maxHeight: '100%',
-            maxWidth: '100%',
-            objectFit: 'contain',
-            filter: 'contrast(1.2) brightness(0.85) sepia(0.3)'
+            transform: `rotateX(${rx}deg) rotateY(${ry}deg)`,
+            transition: 'transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1)',
+            transformStyle: 'preserve-3d',
           }}
-        />
+        >
+          <svg
+            viewBox="-200 -200 400 400"
+            style={{
+              width: 'min(88vh, 820px)',
+              height: 'min(88vh, 820px)',
+              opacity: 0.42,
+            }}
+          >
+            {/* Spinning ellipse field */}
+            <g style={{ transformOrigin: 'center', animation: 'kaal-spin 240s linear infinite' }}>
+              {Array.from({ length: 16 }).map((_, i) => (
+                <ellipse
+                  key={i}
+                  rx="40"
+                  ry="160"
+                  fill="none"
+                  stroke="var(--color-aged-brass)"
+                  strokeWidth="0.35"
+                  transform={`rotate(${i * 11.25})`}
+                />
+              ))}
+            </g>
+
+            {/* Outer dashed ring */}
+            <circle r="185" fill="none" stroke="var(--color-aged-brass)" strokeWidth="0.5" strokeDasharray="2 6" />
+            {/* Inner ring */}
+            <circle r="120" fill="none" stroke="var(--color-aged-brass)" strokeWidth="0.4" />
+            {/* Star of David — Shatkona (two overlapping triangles) */}
+            <path
+              d="M0 -110 L95 55 L-95 55Z M0 110 L95 -55 L-95 -55Z"
+              fill="none"
+              stroke="var(--color-terracotta)"
+              strokeWidth="0.6"
+            />
+            {/* Outer square — Bhupura gateway */}
+            <rect
+              x="-170" y="-170" width="340" height="340"
+              fill="none"
+              stroke="var(--color-aged-brass)"
+              strokeWidth="0.3"
+            />
+          </svg>
+        </div>
       </div>
 
-      {/* Editorial Text Content Block */}
+      {/* ── EDITORIAL TEXT CONTENT ───────────────────────────────────── */}
       <div
         style={{
           position: 'relative',
@@ -95,10 +203,10 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           textAlign: 'center',
           display: 'flex',
           flexDirection: 'column',
-          alignItems: 'center'
+          alignItems: 'center',
         }}
       >
-        {/* Curatorial Small Label */}
+        {/* Eyebrow label */}
         <div
           style={{
             display: 'inline-flex',
@@ -109,7 +217,8 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             background: 'rgba(27, 26, 22, 0.7)',
             backdropFilter: 'blur(8px)',
             border: '1px solid var(--border-brass)',
-            borderRadius: '2px'
+            borderRadius: '2px',
+            animation: 'heroReveal 0.8s 0.2s both cubic-bezier(0.16, 1, 0.3, 1)',
           }}
         >
           <Sparkles size={13} style={{ color: 'var(--color-aged-brass)' }} />
@@ -119,56 +228,80 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
               fontWeight: 600,
               letterSpacing: '0.22em',
               textTransform: 'uppercase',
-              color: 'var(--color-antique-parchment)'
+              color: 'var(--color-antique-parchment)',
             }}
           >
-            An Interactive Journey Through Indian Art
+            The Living Museum of Indian Art
           </span>
         </div>
 
-        {/* Monumental Headline */}
+        {/* ── MONUMENTAL "KAAL" HEADLINE — letter-by-letter reveal ───── */}
         <h1
           style={{
-            fontSize: 'clamp(2.4rem, 6.5vw, 5rem)',
-            lineHeight: 1.06,
-            fontWeight: 500,
-            color: 'var(--color-soft-ivory)',
-            letterSpacing: '-0.02em',
-            marginBottom: '24px',
-            textShadow: '0 4px 30px rgba(0,0,0,0.8)'
+            display: 'flex',
+            justifyContent: 'center',
+            fontFamily: 'var(--font-editorial)',
+            fontSize: 'clamp(5.5rem, 20vw, 16rem)',
+            lineHeight: 0.85,
+            letterSpacing: '0.06em',
+            fontWeight: 400,
+            marginBottom: '28px',
+            overflow: 'hidden',
           }}
         >
-          TIME LEAVES ITS MARK.<br />
-          <span style={{ fontStyle: 'italic', color: 'var(--color-antique-parchment)' }}>
-            ART TELLS ITS STORY.
-          </span>
+          {'KAAL'.split('').map((char, i) => (
+            <span
+              key={i}
+              style={{
+                display: 'inline-block',
+                color: 'var(--color-soft-ivory)',
+                animation: `heroReveal 0.7s ${0.5 + i * 0.18}s both cubic-bezier(0.16, 1, 0.3, 1)`,
+              }}
+            >
+              {char}
+            </span>
+          ))}
         </h1>
 
-        {/* Supporting Editorial Statement */}
+        {/* Subtitle */}
         <p
           style={{
-            fontSize: 'clamp(1rem, 1.8vw, 1.22rem)',
-            lineHeight: 1.68,
-            color: 'rgba(245, 240, 230, 0.82)',
-            maxWidth: '720px',
-            marginBottom: '38px',
-            fontWeight: 300
+            fontFamily: 'var(--font-editorial)',
+            fontSize: 'clamp(1.1rem, 2.2vw, 1.6rem)',
+            color: 'var(--color-soft-ivory)',
+            marginBottom: '12px',
+            animation: 'heroReveal 0.7s 1.4s both cubic-bezier(0.16, 1, 0.3, 1)',
           }}
         >
-          From ancient civilizations to the artists shaping our present, discover the objects and ideas that connect India&apos;s artistic past to its living creative traditions.
+          Five Thousand Years of Indian Creative Genius
         </p>
 
-        {/* Strategic Dual CTA Actions */}
+        {/* Italic quote */}
+        <p
+          style={{
+            fontFamily: 'var(--font-editorial)',
+            fontStyle: 'italic',
+            fontSize: 'clamp(0.9rem, 1.4vw, 1.1rem)',
+            color: 'rgba(226, 215, 192, 0.7)',
+            maxWidth: '440px',
+            marginBottom: '38px',
+            animation: 'heroReveal 0.7s 1.7s both cubic-bezier(0.16, 1, 0.3, 1)',
+          }}
+        >
+          "Civilizations change. Materials endure. Art remembers."
+        </p>
+
+        {/* CTA buttons */}
         <div
           style={{
             display: 'flex',
             flexWrap: 'wrap',
             gap: '16px',
             justifyContent: 'center',
-            alignItems: 'center'
+            alignItems: 'center',
+            animation: 'heroReveal 0.7s 2s both cubic-bezier(0.16, 1, 0.3, 1)',
           }}
         >
-          {/* Primary Action: Enter the Chronicle */}
           <button
             onClick={onEnterTimeline}
             style={{
@@ -185,7 +318,8 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
               borderRadius: '2px',
               boxShadow: '0 8px 24px rgba(185, 154, 96, 0.35)',
               transition: 'all 0.3s var(--transition-smooth)',
-              cursor: 'pointer'
+              cursor: 'pointer',
+              fontFamily: 'var(--font-ui)',
             }}
             onMouseEnter={(e) => {
               e.currentTarget.style.transform = 'translateY(-2px)';
@@ -196,11 +330,10 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
               e.currentTarget.style.boxShadow = '0 8px 24px rgba(185, 154, 96, 0.35)';
             }}
           >
-            <span>Enter the Chronicle</span>
+            <span>Begin the Journey</span>
             <ArrowDown size={16} />
           </button>
 
-          {/* Secondary Action: Explore the Collection */}
           <button
             onClick={onExploreCollection}
             style={{
@@ -218,7 +351,8 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
               textTransform: 'uppercase',
               borderRadius: '2px',
               transition: 'all 0.3s var(--transition-smooth)',
-              cursor: 'pointer'
+              cursor: 'pointer',
+              fontFamily: 'var(--font-ui)',
             }}
             onMouseEnter={(e) => {
               e.currentTarget.style.background = 'rgba(185, 154, 96, 0.15)';
@@ -234,7 +368,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           </button>
         </div>
 
-        {/* Museum Curatorial Heritage Stats */}
+        {/* Museum stats */}
         <div
           style={{
             display: 'flex',
@@ -245,7 +379,8 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             paddingTop: '32px',
             borderTop: '1px solid var(--border-subtle)',
             width: '100%',
-            maxWidth: '680px'
+            maxWidth: '680px',
+            animation: 'heroReveal 0.7s 2.3s both cubic-bezier(0.16, 1, 0.3, 1)',
           }}
         >
           <div style={{ textAlign: 'center' }}>
@@ -281,30 +416,119 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
         </div>
       </div>
 
-      {/* Gentle Scroll Indicator */}
+      {/* ── BOTTOM STATUS BAR ────────────────────────────────────────── */}
       <div
         style={{
           position: 'absolute',
-          bottom: '24px',
+          bottom: 0,
+          left: 0,
+          right: 0,
+          zIndex: 10,
+          borderTop: '1px solid rgba(185,154,96,0.14)',
+          background: 'rgba(17,19,15,0.5)',
+          backdropFilter: 'blur(12px)',
+          animation: 'heroReveal 0.7s 2.5s both cubic-bezier(0.16, 1, 0.3, 1)',
+        }}
+      >
+        <div
+          style={{
+            maxWidth: '1400px',
+            margin: '0 auto',
+            padding: '10px 20px',
+            display: 'flex',
+            flexWrap: 'wrap',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            gap: '12px',
+            fontFamily: 'var(--font-ui)',
+            fontSize: '0.6rem',
+            letterSpacing: '0.2em',
+            textTransform: 'uppercase',
+            color: 'rgba(233, 223, 201, 0.45)',
+          }}
+        >
+          <span>c. 2500 BCE — Present</span>
+          <span>16 Curated Masterpieces</span>
+          <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <span
+              style={{
+                width: '6px',
+                height: '6px',
+                borderRadius: '50%',
+                background: 'var(--color-aged-brass)',
+                animation: 'pulse 2s ease-in-out infinite',
+                display: 'inline-block',
+              }}
+            />
+            Permanent Digital Collection
+          </span>
+        </div>
+      </div>
+
+      {/* ── SCROLL INDICATOR ─────────────────────────────────────────── */}
+      <div
+        style={{
+          position: 'absolute',
+          bottom: '52px',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
           gap: '8px',
-          opacity: 0.6,
-          cursor: 'pointer'
+          opacity: 0.55,
+          cursor: 'pointer',
+          zIndex: 3,
+          animation: 'heroReveal 0.7s 2.6s both cubic-bezier(0.16, 1, 0.3, 1)',
         }}
         onClick={onEnterTimeline}
       >
-        <span style={{ fontSize: '0.68rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--color-antique-parchment)' }}>
+        <span style={{ fontSize: '0.62rem', letterSpacing: '0.22em', textTransform: 'uppercase', color: 'var(--color-antique-parchment)', fontFamily: 'var(--font-ui)' }}>
           Scroll to Explore
         </span>
-        <div style={{
-          width: '1px',
-          height: '24px',
-          background: 'linear-gradient(180deg, var(--color-aged-brass), transparent)',
-          animation: 'pulse 2s infinite ease-in-out'
-        }} />
+        <div
+          style={{
+            width: '1px',
+            height: '28px',
+            background: 'linear-gradient(180deg, var(--color-aged-brass), transparent)',
+            animation: 'pulse 2s ease-in-out infinite',
+          }}
+        />
       </div>
+
+      {/* ── INLINE KEYFRAMES ─────────────────────────────────────────── */}
+      <style>{`
+        @keyframes kaal-drift {
+          from { transform: translateY(0) translateX(0); opacity: 0; }
+          10%  { opacity: 1; }
+          90%  { opacity: 0.6; }
+          to   { transform: translateY(-100vh) translateX(20px); opacity: 0; }
+        }
+
+        @keyframes kaal-spin {
+          from { transform: rotate(0deg); }
+          to   { transform: rotate(360deg); }
+        }
+
+        @keyframes heroReveal {
+          from { opacity: 0; transform: translateY(22px); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes pulse {
+          0%, 100% { opacity: 0.4; }
+          50%       { opacity: 1; }
+        }
+
+        /* Reduce motion */
+        @media (prefers-reduced-motion: reduce) {
+          [style*="kaal-drift"],
+          [style*="kaal-spin"],
+          [style*="heroReveal"] {
+            animation: none !important;
+            opacity: 1 !important;
+            transform: none !important;
+          }
+        }
+      `}</style>
     </section>
   );
 };

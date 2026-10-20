@@ -231,7 +231,6 @@ const ArtifactEntry: React.FC<{
   const entryRef = useRef<HTMLDivElement>(null);
   const imgWrapRef = useRef<HTMLDivElement>(null);
   const imgRef = useRef<HTMLImageElement>(null);
-  const revealMaskRef = useRef<HTMLDivElement>(null);
   const textBlockRef = useRef<HTMLDivElement>(null);
   const dateRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
@@ -239,7 +238,6 @@ const ArtifactEntry: React.FC<{
   const metaRef = useRef<HTMLDivElement>(null);
   const btnRef = useRef<HTMLButtonElement>(null);
   const nodeRef = useRef<HTMLButtonElement>(null);
-  const [imgLoaded, setImgLoaded] = useState(false);
   const [hovered, setHovered] = useState(false);
 
   const isRight = index % 2 === 1; // alternate layout
@@ -274,25 +272,13 @@ const ArtifactEntry: React.FC<{
       );
     }
 
-    // Image reveal via clip-path curtain
+    // Subtle parallax on the image itself (instant appearance, no curtain delay)
     const imgWrap = imgWrapRef.current;
-    const revealMask = revealMaskRef.current;
-    if (imgWrap && revealMask) {
-      gsap.fromTo(revealMask,
-        { scaleY: 1, transformOrigin: 'top center' },
-        {
-          scaleY: 0,
-          duration: 1.1,
-          ease: 'power3.inOut',
-          scrollTrigger: { trigger: el, start: 'top 72%', toggleActions: 'play none none none' }
-        }
-      );
-
-      // Subtle parallax on the image itself
+    if (imgWrap && imgRef.current) {
       gsap.fromTo(imgRef.current,
-        { y: 24 },
+        { y: 20 },
         {
-          y: -24,
+          y: -20,
           ease: 'none',
           scrollTrigger: {
             trigger: imgWrap,
@@ -421,8 +407,7 @@ const ArtifactEntry: React.FC<{
               ref={imgRef}
               src={artifact.image}
               alt={artifact.imageAlt}
-              loading="lazy"
-              onLoad={() => setImgLoaded(true)}
+              decoding="async"
               style={{
                 width: '100%',
                 height: '105%',
@@ -430,19 +415,9 @@ const ArtifactEntry: React.FC<{
                 objectPosition: artifact.imagePosition || 'center center',
                 display: 'block',
                 transformOrigin: 'center center',
-                opacity: imgLoaded ? 1 : 0,
-                transition: 'opacity 0.6s ease'
+                opacity: 1,
               }}
             />
-
-            {/* Reveal curtain */}
-            <div ref={revealMaskRef} style={{
-              position: 'absolute',
-              inset: 0,
-              background: '#11130F',
-              zIndex: 2,
-              transformOrigin: 'top center'
-            }} />
 
             {/* Cinematic vignette */}
             <div style={{
@@ -654,7 +629,7 @@ const ArtifactEntry: React.FC<{
 /* ─────────────────────────────────────────────────────────
    ANIMATED SPINE SVG — draws progressively on scroll
    ───────────────────────────────────────────────────────── */
-const AnimatedSpine: React.FC<{ progress: number }> = ({ progress }) => {
+const AnimatedSpine: React.FC<{ progress: number; color?: string }> = ({ progress, color }) => {
   return (
     <div style={{
       position: 'absolute',
