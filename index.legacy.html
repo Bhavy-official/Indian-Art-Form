@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Indian Art — A Journey Through Time</title>
+    <meta name="description" content="Explore 5,000 years of Indian art through an interactive digital timeline featuring Indus Valley, Ajanta, Chola, Mughal, Madhubani, and Warli traditions.">
+    
+    <!-- Favicon (Inline SVG) -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='none' stroke='%23c49d48' stroke-width='8'/><circle cx='50' cy='50' r='15' fill='%23c49d48'/></svg>" type="image/svg+xml">
+    
+    <!-- Open Graph / Social Meta Tags -->
+    <meta property="og:title" content="Indian Art — A Journey Through Time">
+    <meta property="og:description" content="Explore 5,000 years of Indian art through an interactive digital timeline featuring Indus Valley, Ajanta, Chola, Mughal, Madhubani, and Warli traditions.">
+    <meta property="og:type" content="website">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Indian Art — A Journey Through Time">
+    <meta name="twitter:description" content="Explore 5,000 years of Indian art through an interactive digital timeline featuring Indus Valley, Ajanta, Chola, Mughal, Madhubani, and Warli traditions.">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- scroll progress bar -->
+    <div id="scroll-progress" aria-hidden="true"></div>
+
+    <!-- ─── NAV ─────────────────────────────────── -->
+    <nav class="site-nav" id="site-nav">
+        <div class="nav-inner">
+            <span class="nav-logo">INDIAN ART</span>
+            <div class="nav-filters" id="nav-filters">
+                <button class="nf-btn active" data-target="all">All</button>
+                <button class="nf-btn" data-target="indus-valley">Indus Valley</button>
+                <button class="nf-btn" data-target="ajanta">Ajanta</button>
+                <button class="nf-btn" data-target="chola">Chola</button>
+                <button class="nf-btn" data-target="mughal">Mughal</button>
+                <button class="nf-btn" data-target="madhubani">Madhubani</button>
+                <button class="nf-btn" data-target="warli">Warli</button>
+            </div>
+            <button class="nav-menu-toggle" id="nav-menu-toggle" aria-label="Toggle menu" aria-expanded="false">&#9776;</button>
+        </div>
+    </nav>
+
+    <!-- ─── HERO ─────────────────────────────────── -->
+    <header class="hero" id="hero">
+        <div class="hero-bg-ornament"></div>
+        <div class="hero-content">
+
+            <h1 class="hero-title">
+                <span class="hero-title-main">Indian Art</span>
+                <span class="hero-title-sub">A Journey Through Time</span>
+            </h1>
+            <p class="hero-desc">From the seals of the Indus Valley Civilization to the living traditions of Madhubani and Warli — explore how Indian art has evolved across 5,000 years.</p>
+            <div class="hero-stats">
+                <div class="stat">
+                    <span class="stat-num">6</span>
+                    <span class="stat-lbl">Art Traditions</span>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat">
+                    <span class="stat-num">12</span>
+                    <span class="stat-lbl">Artifacts</span>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat">
+                    <span class="stat-num">5000+</span>
+                    <span class="stat-lbl">Years of Heritage</span>
+                </div>
+            </div>
+            <a href="#timeline" class="hero-cta" id="hero-cta">
+                Explore Timeline
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 9l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+        </div>
+    </header>
+
+    <!-- ─── TIMELINE ─────────────────────────────── -->
+    <main class="timeline" id="timeline">
+
+        <!-- The vertical line -->
+        <div class="timeline-spine"></div>
+
+        <!-- Tradition sections rendered by JS -->
+        <div id="timeline-content"></div>
+
+    </main>
+
+    <!-- ─── REFERENCES ────────────────────────────── -->
+    <section class="references" id="references">
+        <div class="section-inner">
+            <h2 class="section-heading">Sources &amp; References</h2>
+            <p class="section-sub">All historical information in this project is drawn from reputable academic institutions and government sources.</p>
+            <ul class="ref-list">
+                <li><a href="https://asi.nic.in/" target="_blank" rel="noopener">Archaeological Survey of India</a></li>
+                <li><a href="https://nationalmuseumindia.gov.in/" target="_blank" rel="noopener">National Museum, New Delhi</a></li>
+                <li><a href="https://tribal.nic.in/" target="_blank" rel="noopener">Ministry of Tribal Affairs, India</a></li>
+                <li><a href="https://www.metmuseum.org/" target="_blank" rel="noopener">The Metropolitan Museum of Art</a></li>
+                <li><a href="https://asia.si.edu/" target="_blank" rel="noopener">Freer Gallery of Art, Smithsonian</a></li>
+                <li><a href="https://www.vam.ac.uk/" target="_blank" rel="noopener">Victoria and Albert Museum</a></li>
+                <li><a href="https://indiaculture.gov.in/" target="_blank" rel="noopener">Ministry of Culture, Government of India</a></li>
+                <li><a href="https://whc.unesco.org/en/list/242/" target="_blank" rel="noopener">UNESCO World Heritage — Ajanta Caves</a></li>
+                <li><a href="https://commons.wikimedia.org/" target="_blank" rel="noopener">Wikimedia Commons (CC-licensed images)</a></li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- ─── FOOTER ─────────────────────────────────── -->
+    <footer class="site-footer">
+        <p>&copy; Indian Art — A Journey Through Time. A Digital Museum Experience.</p>
+    </footer>
+
+    <!-- ─── MODAL ─────────────────────────────────── -->
+    <div class="modal-backdrop" id="modal-backdrop" aria-hidden="true">
+        <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-artifact-name" id="modal">
+            <button class="modal-close" id="modal-close" aria-label="Close">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 4l12 12M16 4L4 16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+            </button>
+
+            <div class="modal-layout">
+                <!-- Left: image -->
+                <div class="modal-img-col">
+                    <div class="modal-img-wrap">
+                        <img id="modal-img" src="" alt="">
+                    </div>
+                    <div class="modal-img-meta">
+                        <p id="modal-attribution" class="modal-attribution"></p>
+                    </div>
+                </div>
+
+                <!-- Right: info -->
+                <div class="modal-info-col" id="modal-info-col">
+                    <div class="modal-tradition-badge" id="modal-badge"></div>
+                    <h2 class="modal-artifact-name" id="modal-artifact-name"></h2>
+                    <p class="modal-period" id="modal-period"></p>
+
+                    <div class="modal-sections">
+                        <div class="modal-block primary-block">
+                            <h3 class="modal-block-label">Historical Context</h3>
+                            <p id="modal-context"></p>
+                        </div>
+                        <div class="modal-block primary-block">
+                            <h3 class="modal-block-label">Significance</h3>
+                            <p id="modal-significance"></p>
+                        </div>
+                        <div class="modal-row">
+                            <div class="modal-block">
+                                <h3 class="modal-block-label">Material</h3>
+                                <p id="modal-material"></p>
+                            </div>
+                            <div class="modal-block">
+                                <h3 class="modal-block-label">Technique</h3>
+                                <p id="modal-technique"></p>
+                            </div>
+                        </div>
+                        <div class="modal-block">
+                            <h3 class="modal-block-label">Cultural Importance</h3>
+                            <p id="modal-cultural"></p>
+                        </div>
+                    </div>
+
+                    <a class="modal-source-link" id="modal-source-link" href="#" target="_blank" rel="noopener">
+                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5.5 2.5H2.5a1 1 0 00-1 1v8a1 1 0 001 1h8a1 1 0 001-1V8.5M9 1.5h3.5m0 0v3.5m0-3.5L5.5 8.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        View Source
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- back to top -->
+    <button id="back-to-top" aria-label="Scroll to top" title="Back to top">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+            <path d="M9 13V5M5 9l4-4 4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+    </button>
+
+    <script src="data.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
