@@ -6,44 +6,45 @@
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,600&family=Manrope:wght@300;400;500;600;700&display=swap');
 
 :root {
-  /* Brand Tokens */
-  --color-obsidian: #141411;
-  --color-deep-forest: #20291F;
-  --color-warm-charcoal: #25231E;
-  --color-antique-parchment: #E9DFC9;
+  /* Brand Tokens — Dark Living Archive */
+  --color-obsidian: #11130F; /* Nearly black charcoal */
+  --color-deep-forest: #20291F; /* Deep forest undertone */
+  --color-aged-olive: #2E382A; /* Subtle aged-olive highlight */
+  --color-warm-charcoal: #1E241D;
+  --color-antique-parchment: #E2D7C0;
   --color-soft-ivory: #F5F0E6;
-  --color-aged-brass: #B99A60;
-  --color-brass-glow: rgba(185, 154, 96, 0.35);
-  --color-brass-dim: rgba(185, 154, 96, 0.15);
+  --color-aged-brass: #B99A60; /* Antique brass */
+  --color-brass-glow: rgba(185, 154, 96, 0.25);
+  --color-brass-dim: rgba(185, 154, 96, 0.12);
 
   /* Period Specific Cultural Accents */
   --color-terracotta: #A6533B;
-  --color-terracotta-dim: rgba(166, 83, 59, 0.18);
+  --color-terracotta-dim: rgba(166, 83, 59, 0.15);
   --color-indigo: #41476C;
-  --color-indigo-dim: rgba(65, 71, 108, 0.2);
+  --color-indigo-dim: rgba(65, 71, 108, 0.16);
   --color-verdigris: #637C6B;
-  --color-verdigris-dim: rgba(99, 124, 107, 0.2);
+  --color-verdigris-dim: rgba(99, 124, 107, 0.16);
   --color-muted-stone: #858174;
-  --color-sandstone: #C4A482;
+  --color-sandstone: #A89078;
 
   /* Elevation & Surface Layers */
-  --surface-base: var(--color-obsidian);
-  --surface-elevated: #1B1A16;
-  --surface-card: #201E1A;
-  --surface-overlay: rgba(20, 20, 17, 0.88);
-  --surface-glass: rgba(27, 26, 22, 0.72);
-  --border-subtle: rgba(233, 223, 201, 0.1);
-  --border-brass: rgba(185, 154, 96, 0.3);
-  --border-brass-bright: rgba(185, 154, 96, 0.6);
+  --surface-base: #11130F;
+  --surface-elevated: #161914;
+  --surface-card: #191D17;
+  --surface-overlay: rgba(17, 19, 15, 0.94);
+  --surface-glass: rgba(22, 25, 20, 0.85);
+  --border-subtle: rgba(185, 154, 96, 0.12);
+  --border-brass: rgba(185, 154, 96, 0.28);
+  --border-brass-bright: rgba(185, 154, 96, 0.55);
 
   /* Typography */
   --font-editorial: 'Cormorant Garamond', Georgia, serif;
   --font-ui: 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 
   /* Shadows & Spatial Atmosphere */
-  --shadow-plaque: 0 16px 40px -12px rgba(0, 0, 0, 0.7), 0 0 1px 1px rgba(185, 154, 96, 0.15);
-  --shadow-glow: 0 0 45px -10px rgba(185, 154, 96, 0.25);
-  --shadow-deep: 0 30px 80px -20px rgba(0, 0, 0, 0.9);
+  --shadow-plaque: 0 16px 40px -12px rgba(0, 0, 0, 0.85), 0 0 1px 1px rgba(185, 154, 96, 0.12);
+  --shadow-glow: 0 0 35px -8px rgba(185, 154, 96, 0.2);
+  --shadow-deep: 0 30px 80px -20px rgba(0, 0, 0, 0.95);
 
   /* Spacing */
   --space-unit: 8px;
@@ -217,6 +218,27 @@ img {
 }
 ::-webkit-scrollbar-thumb:hover {
   background: var(--color-aged-brass);
+}
+
+/* FadeIn animation — used by proximity glyph labels */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ─────────────────────────────────────────────────────────
+   Glyph drift animation
+   ───────────────────────────────────────────────────────── */
+@keyframes glyphDrift {
+  0%   { transform: translate(-50%, -50%) translateY(0px); }
+  50%  { transform: translate(-50%, -50%) translateY(-12px); }
+  100% { transform: translate(-50%, -50%) translateY(0px); }
+}
+
+/* Ensure all page sections stack on top of the fixed background */
+#hero, #timeline, #collection, #references, footer {
+  position: relative;
+  z-index: 1;
 }
 
 /* Reduced Motion Override */

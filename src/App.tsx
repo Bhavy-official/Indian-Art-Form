@@ -6,6 +6,7 @@ import { CollectionSection } from './components/collection/CollectionSection';
 import { ReferencesSection } from './components/sections/ReferencesSection';
 import { Footer } from './components/layout/Footer';
 import { ArtifactDetail } from './components/artifact/ArtifactDetail';
+import { LivingArchiveBackground } from './components/background/LivingArchiveBackground';
 import { ARTIFACTS_DATA, Artifact } from './data/artifacts';
 
 export const App: React.FC = () => {
@@ -102,6 +103,9 @@ export const App: React.FC = () => {
 
   return (
     <div style={{ position: 'relative', minHeight: '100vh', backgroundColor: 'var(--surface-base)' }}>
+      {/* Dark Living Archive Background — fixed, behind all content */}
+      <LivingArchiveBackground />
+
       {/* Universal Top Navigation */}
       <Navbar
         activeSection={activeSection}
