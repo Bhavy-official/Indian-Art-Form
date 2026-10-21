@@ -26,9 +26,8 @@ Designed to feel like a contemporary physical gallery hewn from dark stone, aged
    - Filter by epoch or art medium (Sculpture, Painting, Architecture, Miniature, Folk Art).
    - Alternating monumental cards with curated metadata, dates, and historical analysis.
 
-3. **Interactive 3D Exhibition & Hotspot Analysis:**
+3. **Interactive Exhibition & Hotspot Analysis:**
    - Full-screen exhibition display with high-resolution photography.
-   - Interactive 3D WebGL artifact viewer with real-time lighting, smooth damping, mouse/touch rotation, and zoom.
    - Interactive visual hotspots detailing casting techniques, mudras, pigments, and iconographic symbols.
 
 4. **Permanent Catalogue & Side-by-Side Comparison:**
